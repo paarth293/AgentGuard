@@ -7,7 +7,7 @@ AgentGuard is a **VS Code extension** that gives developers visibility, control,
 ---
 
 ## 🎥 Demo Video
-*(link to be added after recording)*
+**[Watch the 2-minute Walkthrough on Google Drive](https://drive.google.com/file/d/1eDtXt9HHi5ztSz9OJiIKtuH4yFRrCKzC/view?usp=sharing)**
 
 ---
 

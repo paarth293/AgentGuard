@@ -1,5 +1,10 @@
 # 🛡️ AgentGuard — AI Coding Safety Layer
 
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![VS Code](https://img.shields.io/badge/VS_Code_Extension-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
+
 > **Quackathon Track 03 Submission** — Built in 48 hours using the Produck feedback loop on Enter Pro.
 
 AgentGuard is a **VS Code extension** that gives developers visibility, control, and memory over AI coding agent sessions. It was designed and built based on **5 real friction points** captured via the Produck Chrome extension while using Enter Pro.
@@ -162,29 +167,30 @@ Once F5 is pressed, a new VS Code window opens (Extension Development Host). In 
 
 ## 🏗️ Architecture
 
-```
-AgentGuard VS Code Extension
-├── src/
-│   ├── extension.ts          # Entry point, command registration
-│   ├── checkpoint.ts         # Git-backed snapshot system
-│   ├── healthCheck.ts        # Workspace environment auditor
-│   ├── diffReview.ts         # Per-file accept/reject panel
-│   ├── memory.ts             # Async bridge to TrueMemory DB
-│   ├── memory_bridge.py      # Python CLI bridge to SQLite
-│   └── dashboard/
-│       └── DashboardPanel.ts # Webview panel controller
-├── index.html                # Dashboard UI (5 tabs)
-├── index.css                 # Dashboard styles
-├── app.js                    # Dashboard frontend logic
-└── package.json
+```mermaid
+graph TD
+    A[Enter Pro Agent] -->|Makes Autonomous Edits| B{AgentGuard Core}
+    
+    B -->|1. Snapshots Workspace| C[(Local Git Tree)]
+    B -->|2. Detects Drift| D[git diff --numstat]
+    B -->|3. Audits Environment| E[npm, git, .env]
+    B -->|4. Queries Rules| F[(TrueMemory SQLite)]
+    
+    F -->|Parcel Recall Prompt| A
+    D -->|Sync Prompt| A
+    C -->|Rollback / Reject| A
+    
+    style A fill:#ff9900,stroke:#333,stroke-width:2px,color:#000
+    style B fill:#007ACC,stroke:#333,stroke-width:2px,color:#fff
+    style C fill:#f05032,stroke:#333,stroke-width:2px,color:#fff
+    style F fill:#07405E,stroke:#333,stroke-width:2px,color:#fff
 ```
 
-**Tech stack:**
-- TypeScript (VS Code Extension API)
-- Python (TrueMemory SQLite bridge)
-- Vanilla HTML/CSS/JS (Dashboard webview)
-- SQLite via TrueMemory (`~/.truememory/memories.db`)
-- Git (checkpoint and diff operations)
+**System Components:**
+- **`src/checkpoint.ts`**: Hooks into local Git for atomic state recovery.
+- **`src/healthCheck.ts`**: Parallel subprocess executor for `npm` and `git` audits.
+- **`src/diffReview.ts`**: Intercepts and parses git diffs for granular staging.
+- **`src/memory.ts` & `src/memory_bridge.py`**: Cross-language bridge allowing the TypeScript extension to query the Parcel/TrueMemory Python SQLite database.
 
 ---
 

@@ -1,0 +1,78 @@
+{
+  "name": "agentguard",
+  "displayName": "AgentGuard",
+  "description": "Safety layer for AI coding agents — checkpoints, sync, review, health check, and memory database",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "agentguard.saveCheckpoint",
+        "title": "AgentGuard: Save Checkpoint",
+        "icon": "$(bookmark)"
+      },
+      {
+        "command": "agentguard.openDashboard",
+        "title": "AgentGuard: Open Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "agentguard.copySyncPrompt",
+        "title": "AgentGuard: Copy Sync Prompt",
+        "icon": "$(clippy)"
+      },
+      {
+        "command": "agentguard.reviewChanges",
+        "title": "AgentGuard: Review AI Changes",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "agentguard.healthCheck",
+        "title": "AgentGuard: Run Health Check",
+        "icon": "$(pulse)"
+      },
+      {
+        "command": "agentguard.copyMemoryPrompt",
+        "title": "AgentGuard: Copy Memory Recall Prompt",
+        "icon": "$(database)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "agentguard-sidebar",
+          "title": "AgentGuard",
+          "icon": "$(shield)"
+        }
+      ]
+    },
+    "views": {
+      "agentguard-sidebar": [
+        {
+          "id": "agentguard.mainView",
+          "name": "AgentGuard",
+          "type": "webview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "18.x",
+    "typescript": "^5.3.2"
+  }
+}

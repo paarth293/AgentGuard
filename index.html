@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentGuard — AI Coding Safety Layer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <!-- Ambient background glow -->
+  <div class="bg-aurora" aria-hidden="true">
+    <span class="aurora aurora--1"></span>
+    <span class="aurora aurora--2"></span>
+    <span class="aurora aurora--3"></span>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="app-shell">
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar glass">
+      <div class="brand">
+        <div class="brand__mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </div>
+        <div class="brand__text">
+          <span class="brand__name">AgentGuard</span>
+          <span class="brand__tag">AI Safety Layer</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav__item is-active" data-view="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Overview</span>
+        </button>
+        <button class="nav__item" data-view="checkpoints">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.5 2.8"/><path d="M3 4v4h4"/><path d="M12 7v5l3 2"/></svg>
+          <span>Checkpoints</span>
+          <em class="nav__badge" data-feature="1">FP1</em>
+        </button>
+        <button class="nav__item" data-view="sync">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          <span>Memory Sync</span>
+          <em class="nav__badge" data-feature="2">FP2</em>
+        </button>
+        <button class="nav__item" data-view="diff">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M5 8 9 12l-4 4"/><path d="M19 8l-4 4 4 4"/></svg>
+          <span>Diff Review</span>
+          <em class="nav__badge" data-feature="3">FP3</em>
+        </button>
+        <button class="nav__item" data-view="health">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>
+          <span>Health Check</span>
+          <em class="nav__badge" data-feature="4">FP4</em>
+        </button>
+        <button class="nav__item" data-view="memory">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5a3 3 0 0 0-3 3 3 3 0 0 0-1 5.8V17a2 2 0 0 0 4 0"/><path d="M12 5a3 3 0 0 1 3 3 3 3 0 0 1 1 5.8V17a2 2 0 0 1-4 0"/></svg>
+          <span>Parcel Memory</span>
+          <em class="nav__badge" data-feature="5">FP5</em>
+        </button>
+      </nav>
+
+      <div class="sidebar__foot">
+        <div class="agent-status glass-inset">
+          <span class="pulse-dot"></span>
+          <div>
+            <strong id="agentStateLabel">Agent: Guarded</strong>
+            <small>Watching 38 files</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN ============ -->
+    <main class="main">
+      <header class="topbar glass">
+        <div class="topbar__title">
+          <h1 id="viewTitle">Mission Control</h1>
+          <p id="viewSubtitle">Real-time safety telemetry for your AI coding agent.</p>
+        </div>
+        <div class="topbar__actions">
+          <div class="project-pill glass-inset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-7l-2-3H5a2 2 0 0 0-2 2Z"/></svg>
+            <span>converge-ai / enter-pro</span>
+          </div>
+          <button class="btn btn--primary" id="checkpointBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+            <span>Save Checkpoint</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="view-port" id="viewPort">
+
+        <!-- ======= OVERVIEW ======= -->
+        <section class="view is-active" data-view="overview">
+          <div class="stat-grid">
+            <article class="stat-card glass">
+              <div class="stat-card__top"><span class="stat-card__label">Active Snapshots</span><span class="chip chip--green">safe</span></div>
+              <div class="stat-card__value" id="statSnapshots">4</div>
+              <div class="stat-card__spark"><i style="--h:40%"></i><i style="--h:65%"></i><i style="--h:50%"></i><i style="--h:80%"></i><i style="--h:60%"></i><i style="--h:95%"></i></div>
+            </article>
+            <article class="stat-card glass">
+              <div class="stat-card__top"><span class="stat-card__label">Pending Diffs</span><span class="chip chip--amber">review</span></div>
+              <div class="stat-card__value" id="statDiffs">3</div>
+              <div class="stat-card__spark"><i style="--h:70%"></i><i style="--h:45%"></i><i style="--h:90%"></i><i style="--h:30%"></i><i style="--h:60%"></i><i style="--h:50%"></i></div>
+            </article>
+            <article class="stat-card glass">
+              <div class="stat-card__top"><span class="stat-card__label">Env Health</span><span class="chip chip--red" id="healthChip">at risk</span></div>
+              <div class="stat-card__value"><span id="statHealth">82</span><small>%</small></div>
+              <div class="stat-card__spark"><i style="--h:60%"></i><i style="--h:70%"></i><i style="--h:55%"></i><i style="--h:85%"></i><i style="--h:75%"></i><i style="--h:82%"></i></div>
+            </article>
+            <article class="stat-card glass">
+              <div class="stat-card__top"><span class="stat-card__label">Memory Rules</span><span class="chip chip--violet">synced</span></div>
+              <div class="stat-card__value" id="statRules">3</div>
+              <div class="stat-card__spark"><i style="--h:30%"></i><i style="--h:50%"></i><i style="--h:40%"></i><i style="--h:60%"></i><i style="--h:55%"></i><i style="--h:70%"></i></div>
+            </article>
+          </div>
+
+          <div class="overview-split">
+            <div class="panel glass">
+              <div class="panel__head">
+                <h2>Protection Coverage</h2>
+                <span class="muted">5 / 5 shortcomings guarded</span>
+              </div>
+              <ul class="coverage" id="coverageList"><!-- injected --></ul>
+            </div>
+            <div class="panel glass">
+              <div class="panel__head">
+                <h2>Live Activity</h2>
+                <span class="muted">streaming</span>
+              </div>
+              <ul class="activity" id="activityFeed"><!-- injected --></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= CHECKPOINTS / ROLLBACK (FP1) ======= -->
+        <section class="view" data-view="checkpoints">
+          <div class="section-intro">
+            <div>
+              <span class="kicker">FP1 · No Rollback UI</span>
+              <h2>Checkpoint Timeline &amp; One-Click Restore</h2>
+              <p class="muted">Every snapshot is a silent <code>git commit</code>. Restore reverts the workspace byte-for-byte — no tokens spent.</p>
+            </div>
+            <button class="btn btn--primary" id="checkpointBtn2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 5v14M5 12h14"/></svg>
+              <span>New Checkpoint</span>
+            </button>
+          </div>
+          <div class="panel glass">
+            <ol class="timeline" id="timeline"><!-- injected --></ol>
+          </div>
+        </section>
+
+        <!-- ======= MEMORY SYNC (FP2) ======= -->
+        <section class="view" data-view="sync">
+          <div class="section-intro">
+            <div>
+              <span class="kicker">FP2 · Memory Desync</span>
+              <h2>Manual Edit Detector &amp; Sync Prompt</h2>
+              <p class="muted">The file watcher caught manual edits the agent hasn't seen. Generate a sync prompt so it never re-introduces deleted code.</p>
+            </div>
+            <button class="btn btn--ghost" id="simEditBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              <span>Simulate Manual Edit</span>
+            </button>
+          </div>
+          <div class="sync-split">
+            <div class="panel glass">
+              <div class="panel__head"><h2>Desynced Files</h2><span class="chip chip--amber" id="desyncCount">2 drifted</span></div>
+              <ul class="drift-list" id="driftList"><!-- injected --></ul>
+            </div>
+            <div class="panel glass">
+              <div class="panel__head">
+                <h2>Generated Sync Prompt</h2>
+                <button class="btn btn--small" id="copySyncBtn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                  <span>Copy Prompt</span>
+                </button>
+              </div>
+              <pre class="prompt-box" id="syncPrompt"><code><!-- injected --></code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= DIFF REVIEW (FP3) ======= -->
+        <section class="view" data-view="diff">
+          <div class="section-intro">
+            <div>
+              <span class="kicker">FP3 · Forced Commits</span>
+              <h2>Staging Area — Accept / Reject Per File</h2>
+              <p class="muted">AI edits land in a staging area first. Review side-by-side and decide what touches disk.</p>
+            </div>
+            <div class="diff-toolbar">
+              <button class="btn btn--danger-ghost" id="rejectAllBtn">Reject All</button>
+              <button class="btn btn--primary" id="acceptAllBtn">Accept All</button>
+            </div>
+          </div>
+          <div class="diff-layout">
+            <aside class="diff-files panel glass">
+              <div class="panel__head"><h2>Changed</h2><span class="chip chip--amber" id="pendingCount">3</span></div>
+              <ul class="file-list" id="fileList"><!-- injected --></ul>
+            </aside>
+            <div class="diff-view panel glass">
+              <div class="diff-view__head">
+                <span class="file-path" id="diffFilePath">—</span>
+                <div class="diff-view__actions">
+                  <button class="btn btn--reject btn--small" id="rejectOneBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    Reject
+                  </button>
+                  <button class="btn btn--accept btn--small" id="acceptOneBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    Accept
+                  </button>
+                </div>
+              </div>
+              <div class="diff-cols">
+                <div class="diff-col">
+                  <span class="diff-col__label diff-col__label--old">Current (disk)</span>
+                  <pre class="code-pane" id="diffOld"><code></code></pre>
+                </div>
+                <div class="diff-col">
+                  <span class="diff-col__label diff-col__label--new">Proposed (agent)</span>
+                  <pre class="code-pane" id="diffNew"><code></code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= HEALTH CHECK (FP4) ======= -->
+        <section class="view" data-view="health">
+          <div class="section-intro">
+            <div>
+              <span class="kicker">FP4 · Blind Workspace Trust</span>
+              <h2>Pre-Flight Environment Audit</h2>
+              <p class="muted">Validates dependencies, lockfiles, env vars, and known vulnerabilities <em>before</em> the agent runs — so it never wastes a turn on a broken workspace.</p>
+            </div>
+            <button class="btn btn--primary" id="runHealthBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>
+              <span>Run Health Check</span>
+            </button>
+          </div>
+          <div class="health-layout">
+            <div class="panel glass health-gauge-panel">
+              <div class="gauge" id="gauge">
+                <svg viewBox="0 0 120 120">
+                  <defs>
+                    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#fb7185"/>
+                      <stop offset="50%" stop-color="#fbbf24"/>
+                      <stop offset="100%" stop-color="#34d399"/>
+                    </linearGradient>
+                  </defs>
+                  <circle class="gauge__track" cx="60" cy="60" r="52"/>
+                  <circle class="gauge__fill" id="gaugeFill" cx="60" cy="60" r="52"/>
+                </svg>
+                <div class="gauge__center">
+                  <span class="gauge__num" id="gaugeNum">0</span>
+                  <span class="gauge__unit">health</span>
+                </div>
+              </div>
+              <p class="gauge__verdict" id="gaugeVerdict">Not yet scanned</p>
+            </div>
+            <div class="panel glass">
+              <div class="panel__head"><h2>Audit Checklist</h2><span class="muted" id="auditMeta">idle</span></div>
+              <ul class="audit-list" id="auditList"><!-- injected --></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= PARCEL MEMORY (FP5) ======= -->
+        <section class="view" data-view="memory">
+          <div class="section-intro">
+            <div>
+              <span class="kicker">FP5 · No Long-term Memory</span>
+              <h2>Persistent Preferences — parcel-memory.json</h2>
+              <p class="muted">Rules persist across every session. The agent reads them before generating code, so you never re-teach your style.</p>
+            </div>
+          </div>
+          <div class="memory-layout">
+            <div class="panel glass">
+              <div class="panel__head"><h2>Active Rules</h2><span class="chip chip--violet" id="rulesCount">3 rules</span></div>
+              <ul class="rules-list" id="rulesList"><!-- injected --></ul>
+              <form class="rule-add" id="ruleForm">
+                <input type="text" id="ruleInput" placeholder="e.g. Always use arrow functions…" autocomplete="off" />
+                <button class="btn btn--primary" type="submit">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                  Add Rule
+                </button>
+              </form>
+            </div>
+            <div class="panel glass">
+              <div class="panel__head">
+                <h2>.agentguard/parcel-memory.json</h2>
+                <span class="chip chip--green">auto-saved</span>
+              </div>
+              <pre class="json-box" id="memoryJson"><code></code></pre>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ============ TOASTS ============ -->
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <!-- ============ MODAL ============ -->
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal glass" role="dialog" aria-modal="true">
+      <div class="modal__icon" id="modalIcon"></div>
+      <h3 class="modal__title" id="modalTitle"></h3>
+      <p class="modal__body" id="modalBody"></p>
+      <div class="modal__actions">
+        <button class="btn btn--ghost" id="modalCancel">Cancel</button>
+        <button class="btn btn--primary" id="modalConfirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
